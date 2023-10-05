@@ -2,7 +2,7 @@
 # Author: Ian Moore ( imoore@syscoin.org )
 # Date: Sept 2023
 
-from python.prod.cpt.erc import ERC20
+from python.prod.erc import ERC20
 
 class BalancerERC20(ERC20):
     
