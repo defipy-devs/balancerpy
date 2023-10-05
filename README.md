@@ -2,6 +2,7 @@
 Python package for Balancer V1 modelling
 * Currently in Beta (version 0.0.3) until fully tested and analyzed
 
+## Install
 To install package:
 ```
 > git clone https://github.com/icmoore/balancerpy
@@ -13,6 +14,7 @@ or
 ```
 
 ## Basic Weighted Pool Overview
+* See [test notebook](https://github.com/icmoore/balancerpy/blob/main/notebooks/tests/weighted_pool_tests.ipynb) for example implementation
 * Python implementation of Balancer Weighted Pools 'broadly' consists of two main components
     * BalancerMath: refactor of [Balancer V1 Math solidity contract code](https://github.com/balancer/balancer-core/blob/master/contracts/BMath.sol), and was copied from [BalancerPools_Model GH repos](https://github.com/TokenEngineeringCommunity/BalancerPools_Model/blob/main/model/parts/balancer_math.py)
     * BalancerExchange: refactor of [Balancer Pool solidity contract code](https://github.com/balancer/balancer-core/blob/master/contracts/BPool.sol)
@@ -28,4 +30,4 @@ or
     * **Removing Liquidity**     
         * BMath.calcPoolInGivenSingleOut() -> BalancerMath.calc_pool_in_given_single_out() -> BalancerExchange.exit_swap_extern_amount_out()
         * BMath.calcSingleOutGivenPoolIn() ->  BalancerMath.calc_single_out_given_pool_in() -> BalancerExchange.exit_swap_pool_amount_in()
-* See [test notebook](https://github.com/icmoore/balancerpy/blob/main/notebooks/tests/weighted_pool_tests.ipynb) for example implementation
+
