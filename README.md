@@ -1,6 +1,6 @@
 # balancerpy
 Python package for Balancer V1 modelling
-* Currently in Beta (version 0.0.2) until fully tested and analyzed
+* Currently in Beta (version 0.0.3) until fully tested and analyzed
 
 To install package:
 ```
