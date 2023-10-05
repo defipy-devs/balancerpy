@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='BalancerPy',
-      version='0.0.1',
+      version='0.0.3',
       description='Balancer for Python',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -18,5 +18,9 @@ setup(name='BalancerPy',
           'balancerpy.cwpt.factory',
           'balancerpy.erc',
           'balancerpy.group',
+          'python.prod.cwpt.exchg',
+          'python.prod.cwpt.factory',
+          'python.prod.erc',
+          'python.prod.group'
       ],
       zip_safe=False)

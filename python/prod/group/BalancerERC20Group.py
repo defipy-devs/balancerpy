@@ -2,28 +2,17 @@
 # Author: Ian Moore ( imoore@syscoin.org )
 # Date: Sept 2023
 
-from python.prod.cwpt.erc import BalancerERC20
+import numpy as np
+from python.prod.erc import BalancerERC20
 
 class BalancerERC20Group:
   
     def __init__(self) -> None:
         self.tkns = []
-        self.tkn_dic = {}
-        self.base_tkn = None
-       
-    def add_base_token(self, tkn: BalancerERC20):
-        self.base_tkn = tkn
-        if tkn.token_name not in self.tkn_dic:
-            self.tkns.append(tkn)
-            self.tkn_dic[tkn.token_name] = tkn
-        else:
-            print('ERROR: token already exists within group')
-            
+        self.tkn_dic = {}            
         
     def add_token(self, tkn: BalancerERC20):
-        if(self.base_tkn == None):
-            print('ERROR: must add base token')
-        elif tkn.token_name not in self.tkn_dic:    
+        if tkn.token_name not in self.tkn_dic:    
             self.tkns.append(tkn) 
             self.tkn_dic[tkn.token_name] = tkn
         else:
@@ -65,11 +54,17 @@ class BalancerERC20Group:
             tkn_balances[tkn.token_name] = tkn.token_total
         return tkn_balances   
     
-    def get_weights(self):
-        tkn_weights = {}
+    def get_norm_weights(self):
+        tkn_denorm_wts = self.get_denorm_weights()
+        norm_wts = self.normalize_float_arr(list(tkn_denorm_wts.values()))
+        norm_wts_dict = {e:norm_wts[k] for k, e in enumerate(tkn_denorm_wts)} 
+        return norm_wts_dict        
+   
+    def get_denorm_weights(self):
+        tkn_denorm_wts = {}
         for tkn in self.tkns:
-            tkn_weights[tkn.token_name] = tkn.token_weight
-        return tkn_weights      
+            tkn_denorm_wts[tkn.token_name] = tkn.token_denorm_weight
+        return tkn_denorm_wts        
         
     def get_base_token(self):
         return self.base_tkn
@@ -82,5 +77,8 @@ class BalancerERC20Group:
         for tkn in self.tkns:
             if tkn.bound:
                 total_weight += tkn.token_denorm_weight
-        return total_weight    
+        return total_weight 
+    
+    def normalize_float_arr(self, float_arr):
+        return list(float_arr/np.sum(float_arr))    
         

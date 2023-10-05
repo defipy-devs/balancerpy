@@ -26,15 +26,13 @@ class BalancerERC20(ERC20):
         self.token_name = name
         self.token_addr = addr
         self.token_total = 0
-        self.token_weight = 0
         self.token_denorm_weight = 0
         self.bound = True
-        self.type = 'weightedpool'
+        self.type = 'weighted'
         
-    def set_params(self, balance, weight, denorm, bound):
-        self.token_weight = weight
-        self.token_denorm_weight = denorm
+    def set_params(self, balance, denorm_weight, bound = True):
         self.token_total = balance
+        self.token_denorm_weight = denorm_weight
         self.bound = bound
            
     def set_weight(self, token_weight):
