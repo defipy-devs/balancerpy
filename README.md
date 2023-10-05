@@ -28,3 +28,4 @@ or
     * **Removing Liquidity**     
         * BMath.calcPoolInGivenSingleOut() -> BalancerMath.calc_pool_in_given_single_out() -> BalancerExchange.exit_swap_extern_amount_out()
         * BMath.calcSingleOutGivenPoolIn() ->  BalancerMath.calc_single_out_given_pool_in() -> BalancerExchange.exit_swap_pool_amount_in()
+* See [test notebook](https://github.com/icmoore/balancerpy/blob/main/notebooks/tests/weighted_pool_tests.ipynb) for example implementation
