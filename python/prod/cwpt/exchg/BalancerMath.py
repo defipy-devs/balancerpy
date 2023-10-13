@@ -5,8 +5,8 @@
 # Date: Sept 2023
 
 from decimal import Decimal
-from resources.prod.cwpt import balancer_constants
-from resources.prod.cwpt.balancer_constants import BONE
+from python.prod.cwpt.exchg import balancer_constants
+from python.prod.cwpt.exchg.balancer_constants import BONE
 from python.prod.cwpt.exchg.result import BalancerMathResult
 
 class BalancerMath:

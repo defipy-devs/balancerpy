@@ -3,18 +3,22 @@
 # Date: Sept 2023
 
 import numpy as np
-from python.prod.erc import BalancerERC20
+from python.prod.erc import ERC20
 
 class BalancerERC20Group:
   
     def __init__(self) -> None:
         self.tkns = []
-        self.tkn_dic = {}            
+        self.tkn_dic = {}   
+        self.tkn_denorm_wts = {}
+        self.tkn_bounds = {}
         
-    def add_token(self, tkn: BalancerERC20):
+    def add_token(self, tkn: ERC20, weight: float, bound: bool = True):
         if tkn.token_name not in self.tkn_dic:    
             self.tkns.append(tkn) 
             self.tkn_dic[tkn.token_name] = tkn
+            self.tkn_denorm_wts[tkn.token_name] = weight
+            self.tkn_bounds[tkn.token_name] = bound
         else:
             print('ERROR: token already exists within group')
 
@@ -61,10 +65,10 @@ class BalancerERC20Group:
         return norm_wts_dict        
    
     def get_denorm_weights(self):
-        tkn_denorm_wts = {}
-        for tkn in self.tkns:
-            tkn_denorm_wts[tkn.token_name] = tkn.token_denorm_weight
-        return tkn_denorm_wts        
+        return self.tkn_denorm_wts   
+    
+    def get_bounds(self):
+        return self.tkn_bounds       
         
     def get_base_token(self):
         return self.base_tkn
@@ -75,8 +79,8 @@ class BalancerERC20Group:
     def get_total_denorm_weight(self):
         total_weight = 0
         for tkn in self.tkns:
-            if tkn.bound:
-                total_weight += tkn.token_denorm_weight
+            if self.tkn_bounds[tkn.token_name]:
+                total_weight += self.tkn_denorm_wts[tkn.token_name] 
         return total_weight 
     
     def normalize_float_arr(self, float_arr):

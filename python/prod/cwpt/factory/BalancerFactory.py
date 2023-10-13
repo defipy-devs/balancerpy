@@ -3,7 +3,6 @@
 # Date: Sept 2023
 
 from python.prod.erc import ERC20
-from python.prod.erc import BalancerERC20
 from python.prod.cwpt.exchg import BalancerExchange 
 from python.prod.group import BalancerERC20Group
 

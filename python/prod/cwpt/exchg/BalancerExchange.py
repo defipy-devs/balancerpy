@@ -3,12 +3,12 @@
 # Date: Oct 2023
 
 from decimal import Decimal
-from python.prod.erc import BalancerERC20
+from python.prod.erc import ERC20
 from python.prod.group import BalancerERC20Group
 from python.prod.cwpt.factory import BalancerFactory
 from python.prod.cwpt.exchg.BalancerMath import BalancerMath 
-from resources.prod.cwpt.balancer_constants import EXIT_FEE
-from resources.prod.cwpt.balancer_constants import MAX_OUT_RATIO
+from python.prod.cwpt.exchg.balancer_constants import EXIT_FEE
+from python.prod.cwpt.exchg.balancer_constants import MAX_OUT_RATIO
 import math
 
 SWAP_FEE = 0.0025
@@ -126,9 +126,10 @@ class BalancerExchange():
         assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
         total_weight = self.tkn_group.get_total_denorm_weight()
+        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
         join_swap = BalancerMath.calc_pool_out_given_single_in(
             token_balance_in=Decimal(tkn_in.token_total),
-            token_weight_in=Decimal(tkn_in.token_denorm_weight),
+            token_weight_in=Decimal(tkn_denorm_wts[tkn_in.token_name]),
             pool_supply=Decimal(self.pool_shares),
             total_weight=Decimal(total_weight),
             token_amount_in=Decimal(amt_tkn_in),
@@ -162,9 +163,10 @@ class BalancerExchange():
         assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
         total_weight = self.tkn_group.get_total_denorm_weight()
+        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
         join_swap = BalancerMath.calc_single_in_given_pool_out(
             token_balance_in=Decimal(tkn_in.token_total),
-            token_weight_in=Decimal(Decimal(tkn_in.token_denorm_weight)),
+            token_weight_in=Decimal(Decimal(tkn_denorm_wts[tkn_in.token_name])),
             pool_supply=Decimal(self.pool_shares),
             total_weight=Decimal(total_weight),
             pool_amount_out=Decimal(amt_shares_in),
@@ -202,9 +204,10 @@ class BalancerExchange():
         assert amt_tkn_out < self.tkn_reserves[tkn_out.token_name]*float(MAX_OUT_RATIO), 'Balancer: MAX OUT RATIO'
         
         total_weight = self.tkn_group.get_total_denorm_weight()
+        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
         exit_swap = BalancerMath.calc_pool_in_given_single_out(
                 token_balance_out=Decimal(tkn_out.token_total),
-                token_weight_out=Decimal(tkn_out.token_denorm_weight),
+                token_weight_out=Decimal(tkn_denorm_wts[tkn_out.token_name]),
                 pool_supply=Decimal(self.pool_shares),
                 total_weight=Decimal(total_weight),
                 token_amount_out=Decimal(amt_tkn_out),
@@ -240,9 +243,10 @@ class BalancerExchange():
         assert amt_shares_out < self.pool_shares*float(MAX_OUT_RATIO), 'Balancer: MAX OUT RATIO'
         
         total_weight = self.tkn_group.get_total_denorm_weight()
+        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
         exit_swap = BalancerMath.calc_single_out_given_pool_in(
                 token_balance_out=Decimal(tkn_out.token_total),
-                token_weight_out=Decimal(tkn_out.token_denorm_weight),
+                token_weight_out=Decimal(tkn_denorm_wts[tkn_out.token_name]),
                 pool_supply=Decimal(self.pool_shares),
                 total_weight=Decimal(total_weight),
                 pool_amount_in=Decimal(amt_shares_out),
@@ -541,11 +545,12 @@ class BalancerExchange():
         
         assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
+        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
         out = BalancerMath.calc_out_given_in(token_amount_in = Decimal(amt_tkn_in),
                                         token_balance_in = Decimal(tkn_in.token_total),
-                                        token_weight_in = Decimal(tkn_in.token_denorm_weight),
+                                        token_weight_in = Decimal(tkn_denorm_wts[tkn_in.token_name]),
                                         token_balance_out = Decimal(tkn_out.token_total),
-                                        token_weight_out = Decimal(tkn_out.token_denorm_weight),
+                                        token_weight_out = Decimal(tkn_denorm_wts[tkn_out.token_name]),
                                         swap_fee = Decimal(SWAP_FEE))
         
         return {'tkn_out_amt': float(out.result), 'tkn_in_nm': tkn_in.token_name, 'tkn_in_fee': float(out.fee)}
@@ -567,11 +572,12 @@ class BalancerExchange():
         """          
         
         assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
-                
+        
+        tkn_denorm_wts = self.tkn_group.get_denorm_weights()      
         out = BalancerMath.calc_in_given_out(token_balance_in=Decimal(tkn_in.token_total),
-                                        token_weight_in=Decimal(tkn_in.token_denorm_weight),
+                                        token_weight_in=Decimal(tkn_denorm_wts[tkn_in.token_name]),
                                         token_balance_out=Decimal(tkn_out.token_total),
-                                        token_weight_out=Decimal(tkn_out.token_denorm_weight),
+                                        token_weight_out=Decimal(tkn_denorm_wts[tkn_out.token_name]),
                                         token_amount_out=Decimal(amt_tkn_out),
                                         swap_fee=Decimal(SWAP_FEE))        
         
@@ -594,10 +600,11 @@ class BalancerExchange():
         
         assert self.tkn_group.get_token(base_tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
+        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
         price = BalancerMath.calc_spot_price(token_balance_in = Decimal(base_tkn.token_total),
-                                            token_weight_in = Decimal(base_tkn.token_denorm_weight),
+                                            token_weight_in = Decimal(tkn_denorm_wts[base_tkn.token_name]),
                                             token_balance_out = Decimal(opp_tkn.token_total),
-                                            token_weight_out = Decimal(opp_tkn.token_denorm_weight),
+                                            token_weight_out = Decimal(tkn_denorm_wts[opp_tkn.token_name]),
                                             swap_fee = Decimal(SWAP_FEE))
         
         return float(price)        
