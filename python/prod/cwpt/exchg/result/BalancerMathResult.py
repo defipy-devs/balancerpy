@@ -1,5 +1,5 @@
 # BalancerMathResult.py
-# Author: Ian Moore ( imoore@syscoin.org )
+# Author: Ian Moore ( utiliwire@gmail.com )
 # Original: BalancerMathResult class from BalancerPools_Model
 # - https://github.com/TokenEngineeringCommunity/BalancerPools_Model
 # Date: Sept 2023

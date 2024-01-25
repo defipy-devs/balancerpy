@@ -1,5 +1,5 @@
 # ERC20.py
-# Author: Ian Moore ( imoore@syscoin.org )
+# Author: Ian Moore ( utiliwire@gmail.com )
 # Date: May 2023
 
 class ERC20:

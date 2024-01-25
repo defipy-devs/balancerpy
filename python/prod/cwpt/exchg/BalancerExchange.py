@@ -1,14 +1,14 @@
 # BalancerExchange.py
-# Author: Ian Moore ( imoore@syscoin.org )
+# Author: Ian Moore ( utiliwire@gmail.com )
 # Date: Oct 2023
 
 from decimal import Decimal
-from python.prod.erc import ERC20
-from python.prod.group import BalancerERC20Group
-from python.prod.cwpt.factory import BalancerFactory
-from python.prod.cwpt.exchg.BalancerMath import BalancerMath 
-from python.prod.cwpt.exchg.balancer_constants import EXIT_FEE
-from python.prod.cwpt.exchg.balancer_constants import MAX_OUT_RATIO
+from ...erc import ERC20
+from ...vault import BalancerVault
+from ..factory import BalancerFactory
+from .BalancerMath import BalancerMath 
+from .balancer_constants import EXIT_FEE
+from .balancer_constants import MAX_OUT_RATIO
 import math
 
 SWAP_FEE = 0.0025
@@ -50,7 +50,7 @@ class BalancerExchange():
         - https://token-engineering-balancer.gitbook.io/balancer-simulations/additional-code-and-instructions/balancer-the-python-edition/pool_state_updates.py
     """     
     
-    def __init__(self, creator: BalancerFactory, tkn_group : BalancerERC20Group, symbol: str, addr : str) -> None: 
+    def __init__(self, creator: BalancerFactory, tkn_group : BalancerVault, symbol: str, addr : str) -> None: 
         self.factory = creator
         self.tkn_group = tkn_group
         self.name = tkn_group.get_name()
@@ -82,7 +82,7 @@ class BalancerExchange():
             print(f"Pool Shares: {self.pool_shares} \n") 
 
             
-    def join_pool(self, tkn_group : BalancerERC20Group, amt_shares_in: float, to: str):
+    def join_pool(self, tkn_group : BalancerVault, amt_shares_in: float, to: str):
         
         """ join_pool
 

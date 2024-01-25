@@ -1,11 +1,11 @@
 # BalancerERC20Group.py
-# Author: Ian Moore ( imoore@syscoin.org )
+# Author: Ian Moore ( utiliwire@gmail.com )
 # Date: Sept 2023
 
 import numpy as np
-from python.prod.erc import ERC20
+from ..erc import ERC20
 
-class BalancerERC20Group:
+class BalancerVault:
   
     def __init__(self) -> None:
         self.tkns = []

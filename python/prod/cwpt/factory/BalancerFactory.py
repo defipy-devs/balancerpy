@@ -1,10 +1,10 @@
 # BalancerFactory.py
-# Author: Ian Moore ( imoore@syscoin.org )
+# Author: Ian Moore ( utiliwire@gmail.com )
 # Date: Sept 2023
 
-from python.prod.erc import ERC20
-from python.prod.cwpt.exchg import BalancerExchange 
-from python.prod.group import BalancerERC20Group
+from ...erc import ERC20
+from ...cwpt.exchg import BalancerExchange 
+from ...vault import BalancerVault
 
 class BalancerFactory:
       
@@ -14,7 +14,7 @@ class BalancerFactory:
         self.token_to_exchange = {}
         self.exchange_to_tokens = {}  
         
-    def create_exchange(self, tkn_group : BalancerERC20Group, symbol: str, address : str):     
+    def create_exchange(self, tkn_group : BalancerVault, symbol: str, address : str):     
         
         if self.exchange_to_tokens.get(symbol):
             raise Exception("Exchange already created")    

@@ -14,15 +14,11 @@ setup(name='BalancerPy',
       license='MIT',
       package_dir = {"balancerpy": "python/prod"},
       packages=[
+          'balancerpy',
           'balancerpy.cwpt.exchg',
           'balancerpy.cwpt.exchg.result',
           'balancerpy.cwpt.factory',
           'balancerpy.erc',
-          'balancerpy.group',
-          'python.prod.cwpt.exchg',
-          'python.prod.cwpt.exchg.result',
-          'python.prod.cwpt.factory',
-          'python.prod.erc',
-          'python.prod.group'
+          'balancerpy.vault'
       ],
       zip_safe=False)

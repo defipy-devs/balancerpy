@@ -1,13 +1,13 @@
 # BalancerMath.py
-# Author: Ian Moore ( imoore@syscoin.org )
+# Author: Ian Moore ( utiliwire@gmail.com )
 # Original: BalancerMath class from BalancerPools_Model
 # - https://github.com/TokenEngineeringCommunity/BalancerPools_Model
 # Date: Sept 2023
 
 from decimal import Decimal
-from python.prod.cwpt.exchg import balancer_constants
-from python.prod.cwpt.exchg.balancer_constants import BONE
-from python.prod.cwpt.exchg.result import BalancerMathResult
+from ..exchg import balancer_constants
+from ..exchg.balancer_constants import BONE
+from ..exchg.result import BalancerMathResult
 
 class BalancerMath:
 
