@@ -4,13 +4,13 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='BalancerPy',
-      version='0.0.4',
+      version='0.0.5',
       description='Balancer for Python',
       long_description=long_description,
       long_description_content_type="text/markdown",
       url='http://github.com/icmoore/balancerpy',
       author = "icmoore",
-      author_email = "imoore@syscoin.org",
+      author_email = "utiliwire@gmail.com",
       license='MIT',
       package_dir = {"balancerpy": "python/prod"},
       packages=[
