@@ -5,7 +5,7 @@ Python package for Balancer V2 modelling
 ## Install
 To install package:
 ```
-> git clone https://github.com/icmoore/balancerpy
+> git clone https://github.com/defipy-devs/balancerpy
 > pip install .
 ```
 or
