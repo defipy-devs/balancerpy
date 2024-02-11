@@ -21,6 +21,8 @@ setup(name='BalancerPy',
           'balancerpy.erc',
           'balancerpy.vault',
           'balancerpy.quote',
-          'balancerpy.constants'
+          'balancerpy.constants',
+          'balancerpy.utils.interfaces',
+          'balancerpy.utils.data',         
       ],
       zip_safe=False)

@@ -6,6 +6,9 @@ from decimal import Decimal
 from ...erc import ERC20
 from ...vault import BalancerVault
 from ..factory import BalancerFactory
+from ...utils.interfaces import IExchange 
+from ...utils.data import BalancerExchangeData
+from ...utils.data import FactoryData
 from .BalancerMath import BalancerMath 
 from .balancer_constants import EXIT_FEE
 from .balancer_constants import MAX_OUT_RATIO
@@ -23,7 +26,7 @@ class BalancerExchange():
         ----------
         self.factory : Factory
             Token name 
-        self.tkn_group : BalancerERC20Group
+        self.vault : BalancerERC20Group
             ERC20 token group 
         self.name : str
             Exchange name  
@@ -43,20 +46,15 @@ class BalancerExchange():
             Last pool deposit    
         self.joined : boolean
             Boolean indicator of whether pool has been initialized               
-
-        References
-        ----------   
-        - https://medium.com/balancer-simulations/introducing-balancer-simulations-c0e2807709b8
-        - https://token-engineering-balancer.gitbook.io/balancer-simulations/additional-code-and-instructions/balancer-the-python-edition/pool_state_updates.py
     """     
     
-    def __init__(self, creator: BalancerFactory, tkn_group : BalancerVault, symbol: str, addr : str) -> None: 
-        self.factory = creator
-        self.tkn_group = tkn_group
-        self.name = tkn_group.get_name()
-        self.symbol = symbol 
+    def __init__(self, factory_struct: FactoryData, exchg_struct: BalancerExchangeData):
+        self.factory = factory_struct
+        self.vault = exchg_struct.vault
+        self.name = self.vault.get_name()
+        self.symbol = exchg_struct.symbol
         self.pool_shares = 0
-        self.addr = addr   
+        self.addr = exchg_struct.address   
         self.tkn_reserves = {}
         self.tkn_weights = {}
         self.tkn_fees = {}
@@ -64,25 +62,24 @@ class BalancerExchange():
         self.pool_providers = {} 
         self.last_pool_deposit = 0
         self.joined = False 
-        
-    def info(self):
+      
+    
+    def summary(self):
         if(self.pool_shares == 0):
-            reserve_str = " | ".join([f'{tkn_nm} = {0}' for tkn_nm in self.tkn_reserves]) 
+            reserve_str = ", ".join([f'{tkn_nm} = {0}' for tkn_nm in self.tkn_reserves]) 
             print(f"Balancer Exchange: {self.name} ({self.symbol})")
-            print(f"Coins: {self.tkn_group.get_coins_str()}")
             print(f"Reserves: {reserve_str}")
             print(f"Pool Shares: {self.pool_shares} \n")             
         else:
-            reserve_str = " | ".join([f'{tkn_nm} = {self.tkn_reserves[tkn_nm]}' for tkn_nm in self.tkn_reserves]) 
-            weights_str = " | ".join([f'{tkn_nm} = {self.tkn_weights[tkn_nm]}' for tkn_nm in self.tkn_weights]) 
+            reserve_str = ", ".join([f'{tkn_nm} = {self.tkn_reserves[tkn_nm]}' for tkn_nm in self.tkn_reserves]) 
+            weights_str = ", ".join([f'{tkn_nm} = {self.tkn_weights[tkn_nm]}' for tkn_nm in self.tkn_weights]) 
             print(f"Balancer Exchange: {self.name} ({self.symbol})")
-            print(f"Coins: {self.tkn_group.get_coins_str()}")
             print(f"Reserves: {reserve_str}")
             print(f"Weights: {weights_str}")
             print(f"Pool Shares: {self.pool_shares} \n") 
 
             
-    def join_pool(self, tkn_group : BalancerVault, amt_shares_in: float, to: str):
+    def join_pool(self, vault : BalancerVault, amt_shares_in: float, to: str):
         
         """ join_pool
 
@@ -90,7 +87,7 @@ class BalancerExchange():
                 
             Parameters
             -------
-            tkn_group : BalancerERC20Group
+            tkn_grvaultoup : BalancerERC20Group
                 Group of ERC20 objects     
             amt_shares_in : float
                 Amount of pool shares in      
@@ -99,9 +96,9 @@ class BalancerExchange():
         """          
         
         if(not self.joined):
-            self.tkn_group = tkn_group
-            self.tkn_reserves = tkn_group.get_balances().copy()
-            self.tkn_weights = tkn_group.get_norm_weights().copy()
+            self.vault = vault
+            self.tkn_reserves = vault.get_balances().copy()
+            self.tkn_weights = vault.get_norm_weights().copy()
             self._mint(to, amt_shares_in)
             self.joined = True
         else:
@@ -123,10 +120,10 @@ class BalancerExchange():
                 User name/address                 
         """           
         
-        assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
-        total_weight = self.tkn_group.get_total_denorm_weight()
-        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
+        total_weight = self.vault.get_total_denorm_weight()
+        tkn_denorm_wts = self.vault.get_denorm_weights()
         join_swap = BalancerMath.calc_pool_out_given_single_in(
             token_balance_in=Decimal(tkn_in.token_total),
             token_weight_in=Decimal(tkn_denorm_wts[tkn_in.token_name]),
@@ -138,7 +135,7 @@ class BalancerExchange():
         
         ## *** need to error check for pool_amount_out_expected ***
         
-        self.tkn_group.get_token(tkn_in.token_name).deposit(to, amt_tkn_in)        
+        self.vault.get_token(tkn_in.token_name).deposit(to, amt_tkn_in)        
         self.mint(float(join_swap.result), amt_tkn_in, tkn_in, to)
         self._tally_fees(tkn_in, float(join_swap.fee))
         
@@ -160,10 +157,10 @@ class BalancerExchange():
                 User name/address                 
         """            
         
-        assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
-        total_weight = self.tkn_group.get_total_denorm_weight()
-        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
+        total_weight = self.vault.get_total_denorm_weight()
+        tkn_denorm_wts = self.vault.get_denorm_weights()
         join_swap = BalancerMath.calc_single_in_given_pool_out(
             token_balance_in=Decimal(tkn_in.token_total),
             token_weight_in=Decimal(Decimal(tkn_denorm_wts[tkn_in.token_name])),
@@ -177,7 +174,7 @@ class BalancerExchange():
         tkn_amt_in = float(join_swap.result)
         tkn_fee_in = float(join_swap.fee)
         
-        self.tkn_group.get_token(tkn_in.token_name).deposit(to, tkn_amt_in)        
+        self.vault.get_token(tkn_in.token_name).deposit(to, tkn_amt_in)        
         self.mint(amt_shares_in, tkn_amt_in, tkn_in, to)
         self._tally_fees(tkn_in, tkn_fee_in)
         
@@ -200,11 +197,11 @@ class BalancerExchange():
                 User name/address                 
         """          
         
-        assert self.tkn_group.get_token(tkn_out.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(tkn_out.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         assert amt_tkn_out < self.tkn_reserves[tkn_out.token_name]*float(MAX_OUT_RATIO), 'Balancer: MAX OUT RATIO'
         
-        total_weight = self.tkn_group.get_total_denorm_weight()
-        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
+        total_weight = self.vault.get_total_denorm_weight()
+        tkn_denorm_wts = self.vault.get_denorm_weights()
         exit_swap = BalancerMath.calc_pool_in_given_single_out(
                 token_balance_out=Decimal(tkn_out.token_total),
                 token_weight_out=Decimal(tkn_denorm_wts[tkn_out.token_name]),
@@ -239,11 +236,11 @@ class BalancerExchange():
                 User name/address                 
         """          
         
-        assert self.tkn_group.get_token(tkn_out.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(tkn_out.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         assert amt_shares_out < self.pool_shares*float(MAX_OUT_RATIO), 'Balancer: MAX OUT RATIO'
         
-        total_weight = self.tkn_group.get_total_denorm_weight()
-        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
+        total_weight = self.vault.get_total_denorm_weight()
+        tkn_denorm_wts = self.vault.get_denorm_weights()
         exit_swap = BalancerMath.calc_single_out_given_pool_in(
                 token_balance_out=Decimal(tkn_out.token_total),
                 token_weight_out=Decimal(tkn_denorm_wts[tkn_out.token_name]),
@@ -278,11 +275,11 @@ class BalancerExchange():
                 User name/address                 
         """          
         
-        assert self.tkn_group.get_token(tkn_out.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(tkn_out.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
         self._burn(_from, shares)
-        self.tkn_group.get_token(tkn_out.token_name).transfer(_from, amt_tkn_out)
-        new_balance = self.tkn_group.get_token(tkn_out.token_name).token_total
+        self.vault.get_token(tkn_out.token_name).transfer(_from, amt_tkn_out)
+        new_balance = self.vault.get_token(tkn_out.token_name).token_total
         self._update(new_balance, tkn_out.token_name) 
         
     def _burn(self, _from, shares_out):
@@ -329,8 +326,8 @@ class BalancerExchange():
         for tkn_nm in self.tkn_reserves:
             amt_tkn_out = ratio_out * self.tkn_reserves[tkn_nm]            
             assert amt_tkn_out != 0, 'Balancer: MATH EXIT ERROR'  
-            self.tkn_group.get_token(tkn_nm).transfer(_from, amt_tkn_out)
-            new_balance = self.tkn_group.get_token(tkn_nm).token_total
+            self.vault.get_token(tkn_nm).transfer(_from, amt_tkn_out)
+            new_balance = self.vault.get_token(tkn_nm).token_total
             self._update(new_balance, tkn_nm)  
             tkn_amts_out[tkn_nm] = amt_tkn_out
             
@@ -356,11 +353,11 @@ class BalancerExchange():
                 User name/address                 
         """          
         
-        assert self.tkn_group.get_token(tkn_in.token_name) and self.tkn_group.get_token(tkn_out.token_name), "Balancer: TOKEN NOT PART OF GROUP"
+        assert self.vault.get_token(tkn_in.token_name) and self.vault.get_token(tkn_out.token_name), "Balancer: TOKEN NOT PART OF GROUP"
         
         amount_out_expected = self.get_amount_out(amt_tkn_in, tkn_in, tkn_out)
         assert amount_out_expected['tkn_out_amt'] <= tkn_out.token_total, 'Balancer V1: INSUFFICIENT_OUTPUT_AMOUNT'   
-        self.tkn_group.get_token(tkn_in.token_name).deposit(to, amt_tkn_in)
+        self.vault.get_token(tkn_in.token_name).deposit(to, amt_tkn_in)
         self.swap(amount_out_expected['tkn_out_amt'], amount_out_expected['tkn_in_fee'], tkn_out, tkn_in, to)
         return amount_out_expected
     
@@ -382,11 +379,11 @@ class BalancerExchange():
                 User name/address                 
         """          
         
-        assert self.tkn_group.get_token(tkn_in.token_name) and self.tkn_group.get_token(tkn_out.token_name), "Balancer: TOKEN NOT PART OF GROUP"
+        assert self.vault.get_token(tkn_in.token_name) and self.vault.get_token(tkn_out.token_name), "Balancer: TOKEN NOT PART OF GROUP"
         
         amount_in_expected = self.get_amount_in(amt_tkn_out, tkn_out, tkn_in)
         assert amount_in_expected['tkn_in_amt'] <= tkn_in.token_total, 'Balancer V1: INSUFFICIENT_OUTPUT_AMOUNT'   
-        self.tkn_group.get_token(tkn_out.token_name).deposit(to, amt_tkn_out)
+        self.vault.get_token(tkn_out.token_name).deposit(to, amt_tkn_out)
         self.swap(amount_in_expected['tkn_in_amt'], amount_in_expected['tkn_out_fee'], tkn_in, tkn_out, to)
         return amount_in_expected    
     
@@ -409,8 +406,8 @@ class BalancerExchange():
                 User name/address                 
         """         
         
-        self.tkn_group.get_token(tkn_out.token_name).transfer(to, amt_swap)
-        new_tkn_balances = self.tkn_group.get_balances()
+        self.vault.get_token(tkn_out.token_name).transfer(to, amt_swap)
+        new_tkn_balances = self.vault.get_balances()
         
         res_balance_in = self.tkn_reserves[tkn_in.token_name]
         res_balance_out = self.tkn_reserves[tkn_out.token_name]
@@ -455,7 +452,7 @@ class BalancerExchange():
                 User name/address                 
         """          
         
-        tkn_balance = self.tkn_group.get_token(tkn_in.token_name).token_total
+        tkn_balance = self.vault.get_token(tkn_in.token_name).token_total
         _amt_tkn_in = tkn_balance - self.tkn_reserves[tkn_in.token_name]
         
         assert round(_amt_tkn_in,5) == round(amt_tkn_in,5), 'Balancer V1: MINT ERROR'
@@ -543,9 +540,9 @@ class BalancerExchange():
                 Output token                    
         """          
         
-        assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
-        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
+        tkn_denorm_wts = self.vault.get_denorm_weights()
         out = BalancerMath.calc_out_given_in(token_amount_in = Decimal(amt_tkn_in),
                                         token_balance_in = Decimal(tkn_in.token_total),
                                         token_weight_in = Decimal(tkn_denorm_wts[tkn_in.token_name]),
@@ -571,9 +568,9 @@ class BalancerExchange():
                 Output token                    
         """          
         
-        assert self.tkn_group.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(tkn_in.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
-        tkn_denorm_wts = self.tkn_group.get_denorm_weights()      
+        tkn_denorm_wts = self.vault.get_denorm_weights()      
         out = BalancerMath.calc_in_given_out(token_balance_in=Decimal(tkn_in.token_total),
                                         token_weight_in=Decimal(tkn_denorm_wts[tkn_in.token_name]),
                                         token_balance_out=Decimal(tkn_out.token_total),
@@ -598,9 +595,9 @@ class BalancerExchange():
                 Denomination token of price quote                                     
         """         
         
-        assert self.tkn_group.get_token(base_tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert self.vault.get_token(base_tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
-        tkn_denorm_wts = self.tkn_group.get_denorm_weights()
+        tkn_denorm_wts = self.vault.get_denorm_weights()
         price = BalancerMath.calc_spot_price(token_balance_in = Decimal(base_tkn.token_total),
                                             token_weight_in = Decimal(tkn_denorm_wts[base_tkn.token_name]),
                                             token_balance_out = Decimal(opp_tkn.token_total),
