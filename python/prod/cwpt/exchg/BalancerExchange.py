@@ -1,6 +1,6 @@
-# BalancerExchange.py
-# Author: Ian Moore ( utiliwire@gmail.com )
-# Date: Oct 2023
+# Copyright [2023] [Ian Moore]
+# Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
+# Email: defipy.devs@gmail.com
 
 from decimal import Decimal
 from ...erc import ERC20
@@ -17,7 +17,7 @@ import math
 SWAP_FEE = 0.0025
 MINIMUM_SHARES = 1e-15
 
-class BalancerExchange():
+class BalancerExchange(IExchange):
     
     """ 
         How Balancer calls liquidity pools and uses the constant weighted product automated market maker
