@@ -4,13 +4,13 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='BalancerPy',
-      version='0.0.6',
-      description='Balancer for Python',
+      version='0.0.7',
+      description='Balancer Analytics with Python',
       long_description=long_description,
       long_description_content_type="text/markdown",
-      url='http://github.com/icmoore/balancerpy',
+      url='https://github.com/defipy-devs/balancerpy',
       author = "icmoore",
-      author_email = "utiliwire@gmail.com",
+      author_email = "defipy.devs@gmail.com",
       license='MIT',
       package_dir = {"balancerpy": "python/prod"},
       packages=[
@@ -23,6 +23,6 @@ setup(name='BalancerPy',
           'balancerpy.quote',
           'balancerpy.constants',
           'balancerpy.utils.interfaces',
-          'balancerpy.utils.data',         
+          'balancerpy.utils.data'     
       ],
       zip_safe=False)

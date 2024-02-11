@@ -1,8 +1,9 @@
-# BalancerMathResult.py
-# Author: Ian Moore ( utiliwire@gmail.com )
+# Copyright [2023] [Ian Moore]
+# Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
+# Email: defipy.devs@gmail.com
+
 # Original: BalancerMathResult class from BalancerPools_Model
 # - https://github.com/TokenEngineeringCommunity/BalancerPools_Model
-# Date: Sept 2023
 
 from attr import dataclass
 from decimal import Decimal

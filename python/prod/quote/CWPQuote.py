@@ -1,6 +1,6 @@
-# CWPQuote.py
-# Author: Ian Moore ( utiliwire@gmail.com )
-# Date: Oct 2023
+# Copyright [2023] [Ian Moore]
+# Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
+# Email: defipy.devs@gmail.com
 
 from decimal import Decimal
 from ..cwpt.exchg.BalancerMath import BalancerMath 
