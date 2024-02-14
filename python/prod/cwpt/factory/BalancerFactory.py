@@ -19,11 +19,7 @@ class BalancerFactory(IExchangeFactory):
         self.name : str
             Token name 
         self.address : str
-            Token 0 name  
-        self.exchange_from_token : dictionary
-            Map of tokens to exchanges
-        self.tokens_from_exchange : dictionary
-            Map of exchanges to pair tokens              
+            Address name            
     """       
       
     def __init__(self, name: str, address: str) -> None:

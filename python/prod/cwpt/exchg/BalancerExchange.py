@@ -24,28 +24,10 @@ class BalancerExchange(IExchange):
 
         Parameters
         ---------------
-        self.factory : Factory
-            Token name 
-        self.vault : BalancerERC20Group
-            ERC20 token group 
-        self.name : str
-            Exchange name  
-        self.symbol : str
-            Exchange symbol
-        self.pool_shares : float
-            Total shares in exchange             
-        self.tkn_reserves : dictionary
-            Token reserves  
-        self.tkn_weights : dictionary
-            Token weights   
-        self.collected_fees : dictionary
-            Collected token fees            
-        self.pool_providers : dictionary
-            Pool providers shares 
-        self.last_pool_deposit : float
-            Last pool deposit    
-        self.joined : boolean
-            Boolean indicator of whether pool has been initialized               
+        self.factory_struct : FactoryData
+            Factory data
+        self.exchg_struct : BalancerExchangeData
+            Balancer exchange data                  
     """     
     
     def __init__(self, factory_struct: FactoryData, exchg_struct: BalancerExchangeData):
