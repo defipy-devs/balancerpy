@@ -11,7 +11,30 @@ SWAP_FEE = 0.0025
 
 class CWPQuote():
     
+    """ 
+        Constant weighted product liquidity pool token quotes (ie, price, reserve and liquidity)
+    """        
+    
     def get_amount_from_shares(self, lp, tkn, amount_shares_in):
+        
+        """ get_amount_from_shares
+
+            Get amount of token reserve, given an amount of input liquidity pool shares
+                
+            Parameters
+            -----------------
+            lp : UniswapExchange
+                Uniswap LP    
+            tkn: ERC20
+                Token asset from CWPT set     
+            amount_shares_in: float
+                Amount of input shares             
+
+            Returns
+            -----------------
+            amt_out: float
+                Amount of token reserve
+        """            
         
         assert lp.tkn_group.get_token(tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
 
@@ -34,6 +57,25 @@ class CWPQuote():
         return amt_out  
     
     def get_shares_from_amount(self, lp, tkn, amount_in):
+        
+        """ get_shares_from_amount
+
+            Get amount of liquidity pool shares, given an amount of input token
+                
+            Parameters
+            -----------------
+            lp : UniswapExchange
+                Uniswap LP    
+            tkn: ERC20
+                Token asset from CWPT set  
+            amount_in: float
+                Amount of input token             
+
+            Returns
+            -----------------
+            lp_amt: float
+                Amount of liquidity pool shares
+        """          
         
         assert lp.tkn_group.get_token(tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         

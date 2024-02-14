@@ -7,17 +7,13 @@ class ERC20:
     """ ERC20 token
 
         Parameters
-        ----------
+        ---------------
         self.token_name : str
             Token name 
         self.token_addr : str
             Token address  
         self.token_total : float
             Token holdings 
-            
-        Reference
-        ----------   
-        https://docs.uniswap.org/protocol/V1/guides/connect-to-uniswap#token-interface
     """   
     def __init__(self, name: str, addr: str) -> None:
         self.token_name = name
@@ -30,10 +26,10 @@ class ERC20:
         
         """ deposit
 
-            Reset token LP
+            Deposit token amount in
                 
             Parameters
-            -------
+            ---------------
             _from : str
                 user address   
             value : str
@@ -46,10 +42,10 @@ class ERC20:
         
         """ transfer
 
-            Reset token LP
+            Transfer token amount out
                 
             Parameters
-            -------
+            ---------------
             _to : str
                 user address   
             value : str

@@ -12,10 +12,10 @@ from ...vault import BalancerVault
 class BalancerFactory(IExchangeFactory):
     
     """ 
-        Create liquidity pools for given token pairs.
+        Create Balancer liquidity pools for given token sets
         
         Parameters
-        ----------
+        ---------------
         self.name : str
             Token name 
         self.address : str
@@ -23,7 +23,7 @@ class BalancerFactory(IExchangeFactory):
         self.exchange_from_token : dictionary
             Map of tokens to exchanges
         self.tokens_from_exchange : dictionary
-            Map of exchanges to pair tokens          
+            Map of exchanges to pair tokens              
     """       
       
     def __init__(self, name: str, address: str) -> None:
@@ -34,6 +34,21 @@ class BalancerFactory(IExchangeFactory):
         self.parent_lp = None
         
     def deploy(self, exchg_data : BalancerExchangeData):   
+        
+        """ deploy
+
+            Deploy a Balancer liquidity pool (LP) exchange
+                
+            Parameters
+            -----------------
+            exchg_data : BalancerExchangeData
+                Exchange initialization data     
+
+            Returns
+            -----------------
+            exchange : BalancerExchange
+                Newly created exchange that is also a LP token                    
+        """          
         
         vault = exchg_data.vault
         symbol = exchg_data.symbol
@@ -52,9 +67,39 @@ class BalancerFactory(IExchangeFactory):
     
     def get_exchange(self, token):
         
+        """ get_exchange
+
+            Get exchange from given token
+                
+            Parameters
+            -----------------
+            token : ERC20
+                receiving user address      
+                
+            Returns
+            -----------------
+            exchange : BalancerExchange
+                exchange from mapped token                    
+        """                 
+        
         return self.exchange_from_token.get(token)
 
-    def get_token(self, exchange):       
+    def get_token(self, exchange):      
+        
+        """ get_token
+
+            Get token set from exchange
+                
+            Parameters
+            -----------------
+            exchange : BalancerExchange
+                receiving user address      
+                
+            Returns
+            -----------------
+            token : ERC20 
+                token from mapped exchange                     
+        """          
         
         return self.token_from_exchange.get(exchange)
     

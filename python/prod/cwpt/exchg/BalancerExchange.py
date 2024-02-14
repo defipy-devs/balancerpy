@@ -23,7 +23,7 @@ class BalancerExchange(IExchange):
         How Balancer calls liquidity pools and uses the constant weighted product automated market maker
 
         Parameters
-        ----------
+        ---------------
         self.factory : Factory
             Token name 
         self.vault : BalancerERC20Group
@@ -86,7 +86,7 @@ class BalancerExchange(IExchange):
             Initialize a Balancer pool, and add liquidity for all asset deposit
                 
             Parameters
-            -------
+            ---------------
             tkn_grvaultoup : BalancerERC20Group
                 Group of ERC20 objects     
             amt_shares_in : float
@@ -111,7 +111,7 @@ class BalancerExchange(IExchange):
             Add liquidity via depositing token amount for single asset deposit
                 
             Parameters
-            -------
+            ---------------
             amt_tkn_in : float
                 Amount of token coming in     
             tkn_in : ERC20
@@ -148,7 +148,7 @@ class BalancerExchange(IExchange):
             Add liquidity via depositing shares amount for single asset deposit
                 
             Parameters
-            -------
+            ---------------
             amt_shares_in : float
                 Amount of pool shares coming in     
             tkn_in : ERC20
@@ -188,7 +188,7 @@ class BalancerExchange(IExchange):
             Remove liquidity via withdrawing shares amount for a single asset 
                 
             Parameters
-            -------
+            ---------------
             amt_tkn_out : float
                 Amount of token requested for withdrawal    
             tkn_out : ERC20
@@ -227,7 +227,7 @@ class BalancerExchange(IExchange):
             Remove liquidity via withdrawing shares amount for a single asset 
                 
             Parameters
-            -------
+            ---------------
             amt_shares_out : float
                 Amount of pool shares requested for withdrawal    
             tkn_out : ERC20
@@ -266,7 +266,7 @@ class BalancerExchange(IExchange):
             Burn liquidity from token based on number of pool shares and amount of token
                 
             Parameters
-            -------
+            ---------------
             amt_tkn_out : float
                 Amount of token requested for burn    
             tkn_out : ERC20
@@ -289,7 +289,7 @@ class BalancerExchange(IExchange):
             Burn liquidity from token based on number of pool shares
                 
             Parameters
-            -------
+            ---------------
             shares_out : float
                 Amount of pool shares requested for burn        
             _from : str
@@ -309,7 +309,7 @@ class BalancerExchange(IExchange):
             Remove liquidity via withdrawing shares amount for all assets within pool 
                 
             Parameters
-            -------
+            ---------------
             amt_shares_out : float
                 Amount of pool shares requested for exit        
             _from : str
@@ -342,7 +342,7 @@ class BalancerExchange(IExchange):
             Swap output token given input token 
                 
             Parameters
-            -------
+            ---------------
             amt_tkn_in : float
                 Amount of input token requested for swaping   
             tkn_in : ERC20
@@ -368,7 +368,7 @@ class BalancerExchange(IExchange):
             Swap input token given output token 
                 
             Parameters
-            -------
+            ---------------
             amt_tkn_in : float
                 Amount of input token requested for swaping   
             tkn_in : ERC20
@@ -395,7 +395,7 @@ class BalancerExchange(IExchange):
             Swap output token given input token 
                 
             Parameters
-            -------
+            ---------------
             amt_out : float
                 Amount of input token requested for swaping   
             tkn_in : ERC20
@@ -441,7 +441,7 @@ class BalancerExchange(IExchange):
             Update reserve amount for specific token in the pool
                 
             Parameters
-            -------
+            ---------------
             new_shares : float
                 Amount of new pool shares requested for minting   
             amt_tkn_in : float
@@ -472,7 +472,7 @@ class BalancerExchange(IExchange):
             Update reserve amount for specific token in the pool
                 
             Parameters
-            -------
+            ---------------
             value : float
                 Amount of new pool shares requested for minting                     
             to : str
@@ -494,7 +494,7 @@ class BalancerExchange(IExchange):
             Update reserve amounts specified token
                 
             Parameters
-            -------   
+            ---------------   
             new_balance : float
                 New reserve amount of token      
             tkn_nm : ERC20
@@ -511,7 +511,7 @@ class BalancerExchange(IExchange):
             Tally fee from swap and record last collected fee
                 
             Parameters
-            -------   
+            ---------------   
             tkn : ERC20
                 Token where fees are being collected for     
             fee : float
@@ -531,7 +531,7 @@ class BalancerExchange(IExchange):
             Given some amount of an asset, quotes an equivalent amount of the other asset
                 
             Parameters
-            -------
+            ---------------
             amt_tkn_in : float
                 Amount of token requested for quote            
             tkn_in : ERC20
@@ -559,7 +559,7 @@ class BalancerExchange(IExchange):
             Given some amount of an asset, quotes an equivalent amount of the other asset
                 
             Parameters
-            -------
+            ---------------
             amt_tkn_out : float
                 Amount of token requested for quote            
             tkn_out : ERC20
@@ -588,7 +588,7 @@ class BalancerExchange(IExchange):
             Get price of select token in the exchange pair
                 
             Parameters
-            -------
+            ---------------
             base_tkn : float
                 Base token request for price quote           
             opp_tkn : ERC20
@@ -613,7 +613,7 @@ class BalancerExchange(IExchange):
             Get reserve amount of select token in the pool
                 
             Parameters
-            -------
+            ---------------
             token : ERC20
                 ERC20 token                
         """            
