@@ -36,11 +36,11 @@ class CWPQuote():
                 Amount of token reserve
         """            
         
-        assert lp.tkn_group.get_token(tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert lp.vault.get_token(tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
 
         if(amount_shares_in > 0):
-            total_weight = lp.tkn_group.get_total_denorm_weight()
-            tkn_denorm_wts = lp.tkn_group.get_denorm_weights()
+            total_weight = lp.vault.get_total_denorm_weight()
+            tkn_denorm_wts = lp.vault.get_denorm_weights()
             
             exit_swap = BalancerMath.calc_single_out_given_pool_in(
                 token_balance_out=Decimal(tkn.token_total),
@@ -77,11 +77,11 @@ class CWPQuote():
                 Amount of liquidity pool shares
         """          
         
-        assert lp.tkn_group.get_token(tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
+        assert lp.vault.get_token(tkn.token_name), 'Balancer V1: TOKEN NOT PART OF GROUP'
         
         if(amount_in > 0):
-            total_weight = lp.tkn_group.get_total_denorm_weight()
-            tkn_denorm_wts = lp.tkn_group.get_denorm_weights()
+            total_weight = lp.vault.get_total_denorm_weight()
+            tkn_denorm_wts = lp.vault.get_denorm_weights()
             
             exit_swap = BalancerMath.calc_pool_in_given_single_out(
                     token_balance_out=Decimal(tkn.token_total),
