@@ -53,3 +53,25 @@ Balancer Exchange: DAI-WETH (LP)  <br/>
 Reserves: DAI = 10000000, WETH = 67738.6361731024  <br/>
 Weights: DAI = 0.2, WETH = 0.8  <br/>
 Pool Shares: 100  <br/><br/> 
+
+
+### Swap (out-given-in)
+
+```
+amt_tkn_in = 10000
+tkn_in = dai
+tkn_out = weth
+
+res = Swap(Proc.SWAPOUT).apply(lp, tkn_in, tkn_out, user_nm, amt_tkn_in)
+lp.summary()
+
+print(f"{amt_tkn_in} {tkn_in.token_name} was swapped into {res['tkn_out_amt']} {tkn_out.token_name}")
+```
+
+#### OUTPUT:
+Balancer Exchange: DAI-WETH (LP) <br/>
+Reserves: DAI = 10010000, WETH = 67721.75437414162 <br/>
+Weights: DAI = 0.2, WETH = 0.8 <br/>
+Pool Shares: 100 <br/><br/>   
+
+10000 DAI was swapped into 16.881798960778035 WETH  <br/>
