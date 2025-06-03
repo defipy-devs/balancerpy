@@ -2,7 +2,7 @@
 # Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
 # Email: defipy.devs@gmail.com
 
-from ...enums import Proc
+from ...enums import Proc 
 from uniswappy import TokenDeltaModel
 from uniswappy import EventSelectionModel
 

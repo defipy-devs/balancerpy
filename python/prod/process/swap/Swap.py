@@ -2,7 +2,7 @@
 # Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
 # Email: defipy.devs@gmail.com
 
-from ...enums import Proc
+from ...enums import Proc 
 from uniswappy import TokenDeltaModel
 from uniswappy import EventSelectionModel
 import math
@@ -51,9 +51,9 @@ class Swap():
                 exchanged token amount               
         """ 
         match self.kind:
-            case Proc.SWAPOUT:
-                out = lp.swap_exact_amount_in(amount, token_in, token_out, user_nm)
             case Proc.SWAPIN:
                 out = lp.swap_exact_amount_out(amount, token_out, token_in, user_nm)
+            case Proc.SWAPOUT:
+                out = lp.swap_exact_amount_in(amount, token_in, token_out, user_nm)
         
         return out
