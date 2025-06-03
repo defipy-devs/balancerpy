@@ -4,3 +4,7 @@ from balancerpy.cwpt.factory import *
 from balancerpy.cwpt.exchg import *
 from balancerpy.utils.interfaces import *
 from balancerpy.utils.data import *
+from balancerpy.process.liquidity import *
+from balancerpy.process.swap import *
+from balancerpy.process.join import *
+from balancerpy.enums import *
