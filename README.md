@@ -14,7 +14,7 @@ or
 
 ## Balancer
 
-* See [test notebook](https://github.com/defipy-devs/uniswappy/blob/main/notebooks/tests/test_abstract.ipynb) 
+* See [test notebook](https://github.com/defipy-devs/balancerpy/blob/main/notebooks/tests/test_abstract.ipynb) 
 for basic usage
 
 ```
