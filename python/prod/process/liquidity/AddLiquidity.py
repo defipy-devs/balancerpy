@@ -2,23 +2,26 @@
 # Distributed under the MIT License (license terms are at http://opensource.org/licenses/MIT).
 # Email: defipy.devs@gmail.com
 
-from ..Process import Process
+from ...enums import Proc
 from uniswappy import TokenDeltaModel
 from uniswappy import EventSelectionModel
 
-class AddLiquidity(Process):
+class AddLiquidity():
      
     """ Add liquidity process
 
         Parameters
         ----------
+        kind : Proc
+            Type of swap proceedure
         ev : EventSelectionModel
             EventSelectionModel object to randomly generate buy vs sell events
         tDel : TokenDeltaModel
             TokenDeltaModel to randomly generate token amounts        
     """     
 
-    def __init__(self, init_price = None, ev = None, tDel = None):
+    def __init__(self, kind = None, init_price = None, ev = None, tDel = None):
+        self.kind = Proc.ADDTKN if kind == None else kind
         self.ev = EventSelectionModel() if ev  == None else ev
         self.tDel = TokenDeltaModel(50) if tDel == None else tDel
         self.init_price = 1 if init_price == None else init_price
@@ -27,7 +30,7 @@ class AddLiquidity(Process):
         
         """ apply
 
-            Swap token X for token Y (and vice verse) 
+            Add liquidity based on token or share amounts
                 
             Parameters
             -------
@@ -42,8 +45,14 @@ class AddLiquidity(Process):
                 
             Returns
             -------
-            amount_out_expected : float
+            out : float
                 exchanged token amount               
         """ 
 
-        return None
+        match self.kind:
+            case Proc.ADDTKN:
+                out = lp.join_swap_extern_amount_in(amount_in, token_in, user_nm)
+            case Proc.ADDSHARES:
+                out = lp.join_swap_pool_amount_out(amount_in, token_in, user_nm)
+        
+        return out
