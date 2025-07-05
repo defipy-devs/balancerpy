@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='BalancerPy',
-      version='1.0.2',
+      version='1.0.3',
       description='Balancer Analytics with Python',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -39,6 +39,6 @@ setup(name='BalancerPy',
           'balancerpy.enums'
       ],
       install_requires=[
-          'uniswappy >= 1.7.2'
+          'uniswappy >= 1.7.3'
       ],
       zip_safe=False)
