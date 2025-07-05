@@ -97,3 +97,8 @@ Weights: DAI = 0.2, WETH = 0.8 <br/>
 Pool Shares: 100 <br/> 
 
 20 WETH was swapped into 11863.249850213939 DAI  <br/><br/> 
+
+## License
+Licensed under the Apache License, Version 2.0.  
+See [LICENSE](./LICENSE) and [NOTICE](./NOTICE) for details.  
+Portions of this project may include code from third-party projects under compatible open-source licenses.
