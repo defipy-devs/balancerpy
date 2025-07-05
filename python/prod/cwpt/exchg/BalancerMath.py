@@ -13,8 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License
 
-# Original: BalancerMath class from BalancerPools_Model
-# - https://github.com/TokenEngineeringCommunity/BalancerPools_Model
+# This file contains code adapted from web3-ethereum-defi (https://github.com/TokenEngineeringCommunity/BalancerPools_Model)
+# Licensed under the MIT License.
+# Original copyright (c) 2021 TokenEngineeringCommunity contributors.
 
 from decimal import Decimal
 from ..exchg import balancer_constants
