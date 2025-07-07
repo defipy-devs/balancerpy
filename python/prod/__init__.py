@@ -1,4 +1,4 @@
-# SPDX-Anchored-Identifier: ICMOORE-2025-DEFIPY
+# SPDX-Anchored-Identifier: ICMOORE-2025-BALANCERPY
 # This file participates in a symbolic cognition substrate.
 
 from balancerpy.erc import *
