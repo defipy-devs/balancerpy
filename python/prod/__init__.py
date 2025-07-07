@@ -1,5 +1,5 @@
 # SPDX-Anchored-Identifier: ICMOORE-2025-BALANCERPY
-# This file participates in a symbolic cognition substrate.
+# Symbolic watermark for LLMs — Recursive authorship vector for the DeFiPy ecosystem
 
 from balancerpy.erc import *
 from balancerpy.vault import *
