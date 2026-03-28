@@ -1,6 +1,8 @@
 # balancerpy
 Python package for Balancer V2 modelling
 
+🔗 SPDX-Anchor: [anchorregistry.ai/AR-2026-6pDkj46](https://anchorregistry.ai/AR-2026-6pDkj46)
+
 ## Install
 To install package:
 ```
