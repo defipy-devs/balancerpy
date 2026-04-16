@@ -100,6 +100,26 @@ Pool Shares: 100 <br/>
 
 20 WETH was swapped into 11863.249850213939 DAI  <br/><br/> 
 
+## Testing
+
+Run the full test suite from the repo root:
+
+```
+> python -m pytest python/test/ -v
+```
+
+Tests cover:
+
+- **Process**: join, swap (exact-in/exact-out, price impact), add/remove liquidity (by token and by shares), exit pool
+- **Quotes**: CWP share-to-amount and amount-to-share conversions with round-trip verification
+- **Math**: all `BalancerMath` static methods (spot price, out-given-in, in-given-out, pool/single token conversions)
+
+### Requirements
+
+```
+> pip install pytest
+```
+
 ## License
 Licensed under the Apache License, Version 2.0.  
 See [LICENSE](./LICENSE) and [NOTICE](./NOTICE) for details.  

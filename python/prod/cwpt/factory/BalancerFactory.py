@@ -17,7 +17,7 @@
 # limitations under the License
 
 from ...erc import ERC20
-from ...cwpt.exchg import BalancerExchange 
+from ...cwpt.exchg import BalancerExchange
 from ...utils.interfaces import IExchangeFactory 
 from ...utils.data import BalancerExchangeData
 from ...utils.data import FactoryData

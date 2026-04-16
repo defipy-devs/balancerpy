@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='BalancerPy',
-      version='1.0.4',
+      version='1.0.5',
       description='Balancer Analytics with Python',
       long_description=long_description,
       long_description_content_type="text/markdown",
