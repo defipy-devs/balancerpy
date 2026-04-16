@@ -23,7 +23,10 @@
 # Licensed under the MIT License.
 # Original copyright (c) 2021 TokenEngineeringCommunity contributors.
 
-from decimal import Decimal
+from decimal import Decimal, getcontext
+
+getcontext().prec = 50  # Financial-grade precision; default 28 is marginal for weighted power calculations
+
 from ..exchg import balancer_constants
 from ..exchg.balancer_constants import BONE
 from ..exchg.result import BalancerMathResult
