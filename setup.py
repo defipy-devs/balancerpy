@@ -4,7 +4,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(name='BalancerPy',
-      version='1.0.5',
+      version='1.1.0',
       description='Balancer Analytics with Python',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -27,6 +27,8 @@ setup(name='BalancerPy',
           'balancerpy.cwpt.exchg',
           'balancerpy.cwpt.exchg.result',
           'balancerpy.cwpt.factory',
+          'balancerpy.analytics',
+          'balancerpy.analytics.risk',
           'balancerpy.erc',
           'balancerpy.vault',
           'balancerpy.quote',
@@ -39,6 +41,10 @@ setup(name='BalancerPy',
           'balancerpy.enums'
       ],
       install_requires=[
-          'uniswappy >= 1.7.4'
+          # Parent AMM library (provides ERC, Wallet, math models, process base)
+          'uniswappy >= 1.7.6',
+          # Direct third-party deps
+          'numpy >= 1.21',
+          'attrs >= 21.0',
       ],
       zip_safe=False)
