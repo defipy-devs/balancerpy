@@ -3,6 +3,10 @@ Python package for Balancer V2 modelling
 
 🔗 SPDX-Anchor: [anchorregistry.ai/AR-2026-6pDkj46](https://anchorregistry.ai/AR-2026-6pDkj46)
 
+## 📝 Disclaimer
+
+**BalancerPy** is an **unofficial**, independent Python library for analytics, simulation, and modeling of the Balancer protocol. It is not affiliated with, endorsed by, or associated with Balancer OpCo, Balancer Labs, or the Balancer DAO.
+
 ## Install
 To install package:
 ```
